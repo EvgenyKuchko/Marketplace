@@ -18,6 +18,7 @@ public class User {
     private String email;
     private String password;
     private String nickname;
+    private String userDescription;
     @OneToMany
     private Set<Picture> pictures;
 }
