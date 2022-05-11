@@ -18,6 +18,7 @@ public class User {
     private String email;
     private String password;
     private String nickname;
-    @OneToMany
+    private String userDescription;
+    @OneToMany(mappedBy = "user")
     private Set<Picture> pictures;
 }

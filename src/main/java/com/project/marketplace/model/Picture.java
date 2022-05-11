@@ -17,6 +17,7 @@ public class Picture {
     private String filePath;
     private float price;
     private String creator;
+    private String description;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
