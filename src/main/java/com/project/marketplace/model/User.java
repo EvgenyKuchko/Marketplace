@@ -28,6 +28,6 @@ public class User {
     private Set<Picture> ownPictures;
     @OneToMany(mappedBy = "customer")
     private Set<Offer> sentOffers;
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "salesman")
     private Set<Offer> receivedOffers;
 }
