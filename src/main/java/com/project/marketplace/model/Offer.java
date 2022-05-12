@@ -24,4 +24,6 @@ public class Offer {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "salesman_id", nullable = false)
     private User salesman;
+    @Enumerated(EnumType.STRING)
+    private OfferStatus status;
 }
