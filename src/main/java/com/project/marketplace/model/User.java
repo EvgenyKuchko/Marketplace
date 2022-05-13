@@ -17,8 +17,17 @@ public class User {
     private long id;
     private String email;
     private String password;
+    @Transient
+    private String confirmPassword;
     private String nickname;
     private String userDescription;
-    @OneToMany(mappedBy = "user")
-    private Set<Picture> pictures;
+    private float wallet;
+    @OneToMany(mappedBy = "creator")
+    private Set<Picture> createdPictures;
+    @OneToMany(mappedBy = "owner")
+    private Set<Picture> ownPictures;
+    @OneToMany(mappedBy = "customer")
+    private Set<Offer> sentOffers;
+    @OneToMany(mappedBy = "salesman")
+    private Set<Offer> receivedOffers;
 }
