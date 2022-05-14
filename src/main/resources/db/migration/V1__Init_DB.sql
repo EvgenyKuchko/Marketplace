@@ -29,6 +29,11 @@ create table user
     wallet           float,
     primary key (id)
 );
+create table user_role
+(
+    user_id    bigint not null,
+    roles      varchar(15)
+);
 alter table offer
     add constraint offer_customer_fk foreign key (customer_id) references user;
 alter table offer
@@ -38,4 +43,6 @@ alter table offer
 alter table picture
     add constraint picture_creator_fk foreign key (creator_id) references user;
 alter table picture
-    add constraint picture_owner_fk foreign key (owner_id) references user
+    add constraint picture_owner_fk foreign key (owner_id) references user;
+alter table user_role
+    add constraint user_role_user_fk foreign key (user_id) references user
