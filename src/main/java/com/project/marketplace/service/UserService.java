@@ -44,9 +44,13 @@ public class UserService implements UserDetailsService {
     @Transactional
     public boolean saveNewUser(User user) {
         boolean isUserExist = userRepository.existsByEmail(user.getEmail());
+        boolean isNicknameExist = userRepository.existsByNickname(user.getNickname());
+        boolean isPasswordEquals = user.getPassword().equals(user.getConfirmPassword());
         if (isUserExist) {
             return false;
-        }else if (!user.getPassword().equals(user.getConfirmPassword())) {
+        } else if (isNicknameExist) {
+            return false;
+        } else if (!isPasswordEquals) {
             return false;
         }
         user.setRoles(Collections.singleton(Role.USER));
