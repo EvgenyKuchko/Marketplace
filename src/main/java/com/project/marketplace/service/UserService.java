@@ -1,5 +1,8 @@
 package com.project.marketplace.service;
 
+import com.project.marketplace.exception.EmailException;
+import com.project.marketplace.exception.NicknameException;
+import com.project.marketplace.exception.PasswordException;
 import com.project.marketplace.model.Role;
 import com.project.marketplace.model.User;
 import com.project.marketplace.repository.UserRepository;
@@ -42,16 +45,16 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean saveNewUser(User user) {
+    public boolean saveNewUser(User user) throws Exception{
         boolean isUserExist = userRepository.existsByEmail(user.getEmail());
         boolean isNicknameExist = userRepository.existsByNickname(user.getNickname());
         boolean isPasswordEquals = user.getPassword().equals(user.getConfirmPassword());
         if (isUserExist) {
-            return false;
+            throw new EmailException("The email already exists");
         } else if (isNicknameExist) {
-            return false;
+            throw new NicknameException("The nickname already exists");
         } else if (!isPasswordEquals) {
-            return false;
+            throw new PasswordException("The passwords don't match");
         }
         user.setRoles(Collections.singleton(Role.USER));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -75,5 +78,21 @@ public class UserService implements UserDetailsService {
     @Transactional
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    @Transactional
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Transactional
+    public boolean existsByNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+
+    @Transactional
+    public boolean confirmPassword(String email){
+        User user = userRepository.findByEmail(email);
+        return user.getPassword().equals(user.getConfirmPassword());
     }
 }
