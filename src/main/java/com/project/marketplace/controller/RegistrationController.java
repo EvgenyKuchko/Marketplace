@@ -40,6 +40,6 @@ public class RegistrationController {
             model.addAttribute("passwordError", ex.getMessage());
             return "registration";
         }
-        return "redirect:/main";
+        return "redirect:/login";
     }
 }
