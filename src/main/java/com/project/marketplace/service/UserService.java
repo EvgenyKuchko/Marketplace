@@ -1,5 +1,8 @@
 package com.project.marketplace.service;
 
+import com.project.marketplace.exception.EmailException;
+import com.project.marketplace.exception.NicknameException;
+import com.project.marketplace.exception.PasswordException;
 import com.project.marketplace.model.Role;
 import com.project.marketplace.model.User;
 import com.project.marketplace.repository.UserRepository;
@@ -13,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -40,7 +44,24 @@ public class UserService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
     }
 
-    // saveNewUser
+    @Transactional
+    public boolean saveNewUser(User user) throws Exception{
+        boolean isUserExist = userRepository.existsByEmail(user.getEmail());
+        boolean isNicknameExist = userRepository.existsByNickname(user.getNickname());
+        boolean isPasswordEquals = user.getPassword().equals(user.getConfirmPassword());
+        if (isUserExist) {
+            throw new EmailException("The email already exists");
+        } else if (isNicknameExist) {
+            throw new NicknameException("The nickname already exists");
+        } else if (!isPasswordEquals) {
+            throw new PasswordException("The passwords don't match");
+        }
+        user.setRoles(Collections.singleton(Role.USER));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        return true;
+    }
+
     // updateProfile
 
     @Transactional
@@ -57,5 +78,21 @@ public class UserService implements UserDetailsService {
     @Transactional
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    @Transactional
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Transactional
+    public boolean existsByNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+
+    @Transactional
+    public boolean confirmPassword(String email){
+        User user = userRepository.findByEmail(email);
+        return user.getPassword().equals(user.getConfirmPassword());
     }
 }
