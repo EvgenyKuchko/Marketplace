@@ -6,9 +6,9 @@
 </head>
 <body>
 <form action="/login" method="post">
-<!--    <div th:if="${nicknameError}">-->
-<!--        <p th:text="${nicknameError}"/>-->
-<!--    </div>-->
+    <div th:if="${error}">
+        <p th:text="${error}"/>
+    </div>
     <input name="username" type="text" placeholder="email" class="form"><br>
     <input name="password" type="password" placeholder="password" class="form"><br>
     <button class="btn-submit" type="submit">Submit</button>
