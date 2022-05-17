@@ -62,37 +62,8 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    // updateProfile
-
     @Transactional
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
-    @Transactional
-    public boolean deleteUser(User user) {
-        userRepository.delete(user);
-        return true;
-    }
-
-    @Transactional
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
-
-    @Transactional
-    public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
-    }
-
-    @Transactional
-    public boolean existsByNickname(String nickname) {
-        return userRepository.existsByNickname(nickname);
-    }
-
-    @Transactional
-    public boolean confirmPassword(String email){
-        User user = userRepository.findByEmail(email);
-        return user.getPassword().equals(user.getConfirmPassword());
+    public User findByNickname(String nickname){
+        return userRepository.findByNickname(nickname);
     }
 }
