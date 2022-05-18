@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+<a href="/main">main page</a>
+<div class="nickname">
+    <h1 th:text="${user.nickname}">nickname</h1>
+</div>
+<div class="description" th:if="${user.userDescription != null}">
+    <h1 th:text="${user.userDescription}">description</h1>
+</div>
+<div class="">
+
+</div>
+</body>
+</html>
