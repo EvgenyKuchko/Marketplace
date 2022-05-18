@@ -25,6 +25,7 @@ public class User implements UserDetails {
     private String nickname;
     private String userDescription;
     private float wallet;
+    private String profilePicture;
     @OneToMany(mappedBy = "creator")
     private Set<Picture> createdPictures;
     @OneToMany(mappedBy = "owner")
@@ -33,8 +34,6 @@ public class User implements UserDetails {
     private Set<Offer> sentOffers;
     @OneToMany(mappedBy = "salesman")
     private Set<Offer> receivedOffers;
-    @OneToOne(mappedBy = "user")
-    private ProfilePicture profilePicture;
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
