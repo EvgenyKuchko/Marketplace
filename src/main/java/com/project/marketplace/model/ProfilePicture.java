@@ -17,6 +17,7 @@ public class ProfilePicture {
     private long id;
     private String path;
 
-    @OneToOne(mappedBy = "profilePicture")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }
