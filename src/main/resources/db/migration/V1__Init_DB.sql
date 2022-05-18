@@ -27,13 +27,7 @@ create table user
     password         varchar(255) not null,
     user_description varchar(4000),
     wallet           float,
-    primary key (id)
-);
-create table profile_picture
-(
-    id   bigint not null auto_increment,
-    path varchar(255),
-    user_id bigint not null,
+    profile_picture   varchar(255),
     primary key (id)
 );
 create table user_role
@@ -47,8 +41,6 @@ alter table offer
     add constraint offer_picture_fk foreign key (picture_id) references picture;
 alter table offer
     add constraint offer_salesman_fk foreign key (salesman_id) references user;
-alter table profile_picture
-    add constraint profile_pictures_user_pk foreign key (user_id) references user;
 alter table picture
     add constraint picture_creator_fk foreign key (creator_id) references user;
 alter table picture
