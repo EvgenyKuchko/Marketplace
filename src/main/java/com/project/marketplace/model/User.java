@@ -33,8 +33,7 @@ public class User implements UserDetails {
     private Set<Offer> sentOffers;
     @OneToMany(mappedBy = "salesman")
     private Set<Offer> receivedOffers;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "picture_id", nullable = false)
+    @OneToOne(mappedBy = "user")
     private ProfilePicture profilePicture;
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
