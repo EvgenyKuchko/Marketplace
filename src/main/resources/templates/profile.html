@@ -5,12 +5,15 @@
     <title>Profile</title>
 </head>
 <body>
-<div>
+<a href="/main">main page</a>
+<div class="nickname">
     <h1 th:text="${user.nickname}">nickname</h1>
 </div>
-<div>
-    <h3 th:text="${user.userDescription}">description</h3>
+<div class="description" th:if="${user.userDescription != null}">
+    <h1 th:text="${user.userDescription}">description</h1>
 </div>
-<a href="/main">main page</a>
+<div class="">
+
+</div>
 </body>
 </html>

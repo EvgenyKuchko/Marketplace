@@ -66,4 +66,9 @@ public class UserService implements UserDetailsService {
     public User findByNickname(String nickname){
         return userRepository.findByNickname(nickname);
     }
+
+    @Transactional
+    public void updateDescription(String description, String nickname){
+        userRepository.updateDescription(description,nickname);
+    }
 }
