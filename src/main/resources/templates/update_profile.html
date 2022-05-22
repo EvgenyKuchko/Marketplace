@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update profile</title>
+</head>
+<body>
+<form th:action="@{/{nickname}/update(nickname=${user.nickname})}" th:object="${user}" method="post" enctype="multipart/form-data">
+    <div>
+        <label>Profile Picture: </label>
+        <input name="file" type="file" />
+        <button class="submit" type="submit">Save</button>
+    </div>
+</form>
+<!--<form th:action="@{/{nickname}/update(nickname=${user.nickname})}" th:object="${user}" method="post">-->
+<!--    <p><input th:field="${user.userDescription}" type="text" th:placeholder="${user.userDescription}"/></p>-->
+<!--    <p><input th:field="${user.wallet}" type="text" th:placeholder="${user.wallet}"/></p>-->
+<!--    <button class="submit" type="submit">Change</button>-->
+<!--</form>-->
+</body>
+</html>

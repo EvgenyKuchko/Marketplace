@@ -71,4 +71,9 @@ public class UserService implements UserDetailsService {
     public void updateDescription(String description, String nickname){
         userRepository.updateDescription(description,nickname);
     }
+
+    @Transactional
+    public User saveUser(User user){
+        return userRepository.save(user);
+    }
 }

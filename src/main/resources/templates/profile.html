@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Profile</title>
@@ -10,10 +10,10 @@
     <h1 th:text="${user.nickname}">nickname</h1>
 </div>
 <div class="description" th:if="${user.userDescription != null}">
-    <h1 th:text="${user.userDescription}">description</h1>
+    <p th:text="${user.userDescription}">description</p>
 </div>
-<div class="">
-
+<div class="updateProfileLink" >
+<a th:href="@{|/${user.nickname}/update|}">Update profile</a>
 </div>
 </body>
 </html>
