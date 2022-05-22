@@ -38,12 +38,24 @@ public class ProfileController {
     }
 
     @PostMapping("/update")
-    public String uploadProfilePicture(@RequestParam("file")MultipartFile file,@ModelAttribute("user") User user) throws IOException {
+    public String updateProfile(
+            @RequestParam("file") MultipartFile file,
+            @ModelAttribute("user") User user,
+            @RequestParam("userDescription") String description,
+            @RequestParam("wallet") Float wallet) throws IOException {
+        User userFromDB = userService.findByNickname(user.getNickname());
         if(file != null) {
             String fileName = path + user.getNickname() + file.getOriginalFilename();
             file.transferTo(new File(fileName));
             user.setProfilePicture(fileName);
+            userService.updateProfilePicture(fileName, user.getNickname());
         }
-        return "profile";
+        if(!description.equals(userFromDB.getUserDescription())){
+            userService.updateDescription(description, user.getNickname());
+        }
+        if(wallet != userFromDB.getWallet()) {
+            userService.updateWallet(wallet, user.getNickname());
+        }
+        return "redirect:/" + user.getNickname();
     }
 }

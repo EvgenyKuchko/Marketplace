@@ -68,12 +68,17 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
+    public void updateProfilePicture(String picturePath, String nickname) {
+        userRepository.updateProfilePicture(picturePath, nickname);
+    }
+
+    @Transactional
     public void updateDescription(String description, String nickname){
         userRepository.updateDescription(description,nickname);
     }
 
     @Transactional
-    public User saveUser(User user){
-        return userRepository.save(user);
+    public void updateWallet(Float wallet, String nickname) {
+        userRepository.updateWallet(wallet, nickname);
     }
 }

@@ -17,10 +17,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByNickname(String nickname);
 
     @Modifying
-    @Query("update User u set u.wallet = :wallet where u.id = :id")
-    void updateWallet(@Param("wallet") Float wallet, @Param("id") long id);
+    @Query("update User u set u.wallet = :wallet where u.nickname = :nickname")
+    void updateWallet(@Param("wallet") Float wallet, @Param("nickname") String nickname);
 
     @Modifying
     @Query("update User u set u.userDescription = :description where u.nickname = :nickname")
     void updateDescription(@Param("description") String description, @Param("nickname") String nickname);
+
+    @Modifying
+    @Query("update User u set u.profilePicture = :picture where u.nickname = :nickname")
+    void updateProfilePicture(@Param("picture") String picturePath, @Param("nickname") String nickname);
 }
