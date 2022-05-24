@@ -79,10 +79,7 @@ public class UserService implements UserDetailsService {
         if (multipartFile != null) {
             if (userFromDB.getProfilePicture() != null) {
                 File lastPic = new File(userFromDB.getProfilePicture());
-                boolean isDeleted = lastPic.delete();
-                if(!isDeleted) {
-                    throw new IOException("Delete error");
-                }
+                lastPic.delete();
                 userRepository.deleteProfilePicture(userFromDB.getNickname());
             }
             String fileName = path + user.getNickname() + "-profile-picture" + ".png";
