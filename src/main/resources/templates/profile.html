@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Profile</title>
 </head>
 <body>
+<th:block th:if="${user != null}">
 <a href="/main">main page</a>
 <div class="nickname">
-    <h1 th:text="${user.nickname}">nickname</h1>
+        <h1 th:text="${user.nickname}"></h1>
 </div>
-<div class="description" th:if="${user.userDescription != null}">
-    <h1 th:text="${user.userDescription}">description</h1>
+<div class="description" >
+        <h1 th:text="${user.userDescription}"></h1>
 </div>
-<div class="">
-
+<div class="updateProfileLink" >
+<a th:href="@{|/${user.nickname}/update|}">Update profile</a>
 </div>
+</th:block>
 </body>
 </html>

@@ -7,6 +7,7 @@ import com.project.marketplace.model.Role;
 import com.project.marketplace.model.User;
 import com.project.marketplace.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,10 +16,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -29,6 +32,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Value("${upload.path}")
+    private String path;
 
     @Override
     @Transactional(readOnly = true)
@@ -45,7 +51,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean saveNewUser(User user) throws Exception{
+    public boolean saveNewUser(User user) throws Exception {
         boolean isUserExist = userRepository.existsByEmail(user.getEmail());
         boolean isNicknameExist = userRepository.existsByNickname(user.getNickname());
         boolean isPasswordEquals = user.getPassword().equals(user.getConfirmPassword());
@@ -63,12 +69,29 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public User findByNickname(String nickname){
+    public User findByNickname(String nickname) {
         return userRepository.findByNickname(nickname);
     }
 
     @Transactional
-    public void updateDescription(String description, String nickname){
-        userRepository.updateDescription(description,nickname);
+    public void updateProfile(User user, MultipartFile multipartFile) throws IOException {
+        User userFromDB = userRepository.findByNickname(user.getNickname());
+        if (multipartFile != null) {
+            if (userFromDB.getProfilePicture() != null) {
+                File lastPic = new File(userFromDB.getProfilePicture());
+                lastPic.delete();
+                userRepository.deleteProfilePicture(userFromDB.getNickname());
+            }
+            String fileName = path + user.getNickname() + "-profile-picture" + ".png";
+            multipartFile.transferTo(new File(fileName));
+            user.setProfilePicture(fileName);
+            userRepository.updateProfilePicture(fileName, user.getNickname());
+        }
+        if (!user.getUserDescription().equals(userFromDB.getUserDescription())) {
+            userRepository.updateDescription(user.getUserDescription(), user.getNickname());
+        }
+        if (user.getWallet() != userFromDB.getWallet()) {
+            userRepository.updateWallet(user.getWallet(), user.getNickname());
+        }
     }
 }
