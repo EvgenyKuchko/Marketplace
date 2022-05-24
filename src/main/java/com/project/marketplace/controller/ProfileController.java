@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,18 +41,23 @@ public class ProfileController {
             @RequestParam("file") MultipartFile file,
             @ModelAttribute("user") User user,
             @RequestParam("userDescription") String description,
-            @RequestParam("wallet") Float wallet) throws IOException {
+            @RequestParam("wallet") float wallet) throws IOException {
         User userFromDB = userService.findByNickname(user.getNickname());
-        if(file != null) {
-            String fileName = path + user.getNickname() + file.getOriginalFilename();
+        if (file != null) {
+            if (userFromDB.getProfilePicture() != null) {
+                File lastPic = new File(userFromDB.getProfilePicture());
+                lastPic.delete();
+                userService.deleteProfilePicture(userFromDB.getNickname());
+            }
+            String fileName = path + user.getNickname() + "-profile-picture" + ".png";
             file.transferTo(new File(fileName));
             user.setProfilePicture(fileName);
             userService.updateProfilePicture(fileName, user.getNickname());
         }
-        if(!description.equals(userFromDB.getUserDescription())){
+        if (!description.equals(userFromDB.getUserDescription())) {
             userService.updateDescription(description, user.getNickname());
         }
-        if(wallet != userFromDB.getWallet()) {
+        if (wallet != userFromDB.getWallet()) {
             userService.updateWallet(wallet, user.getNickname());
         }
         return "redirect:/" + user.getNickname();

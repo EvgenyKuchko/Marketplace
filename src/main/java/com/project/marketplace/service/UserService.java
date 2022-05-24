@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -78,7 +79,12 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void updateWallet(Float wallet, String nickname) {
+    public void updateWallet(float wallet, String nickname) {
         userRepository.updateWallet(wallet, nickname);
+    }
+
+    @Transactional
+    public void deleteProfilePicture(String nickname) {
+        userRepository.deleteProfilePicture(nickname);
     }
 }

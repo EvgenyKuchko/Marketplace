@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Modifying
     @Query("update User u set u.wallet = :wallet where u.nickname = :nickname")
-    void updateWallet(@Param("wallet") Float wallet, @Param("nickname") String nickname);
+    void updateWallet(@Param("wallet") float wallet, @Param("nickname") String nickname);
 
     @Modifying
     @Query("update User u set u.userDescription = :description where u.nickname = :nickname")
@@ -27,4 +27,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query("update User u set u.profilePicture = :picture where u.nickname = :nickname")
     void updateProfilePicture(@Param("picture") String picturePath, @Param("nickname") String nickname);
+
+    @Modifying
+    @Query("update User u set u.profilePicture = null where u.nickname = :nickname")
+    void deleteProfilePicture(@Param("nickname") String nickname);
 }
