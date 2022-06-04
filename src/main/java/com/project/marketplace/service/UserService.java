@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -62,6 +63,7 @@ public class UserService implements UserDetailsService {
         } else if (!isPasswordEquals) {
             throw new PasswordException("The passwords don't match");
         }
+        user.setProfilePicture("default-profile-picture.png");
         user.setRoles(Collections.singleton(Role.USER));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -76,14 +78,14 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void updateProfile(User user, MultipartFile multipartFile) throws IOException {
         User userFromDB = userRepository.findByNickname(user.getNickname());
-        if (multipartFile != null) {
-            if (userFromDB.getProfilePicture() != null) {
-                File lastPic = new File(userFromDB.getProfilePicture());
-                lastPic.delete();
+        if (multipartFile != null && !Objects.requireNonNull(multipartFile.getOriginalFilename()).isEmpty()) {
+            if (!userFromDB.getProfilePicture().equals("default-profile-picture.png")) {
+                File previousPic = new File(path + userFromDB.getProfilePicture());
+                previousPic.delete();
                 userRepository.deleteProfilePicture(userFromDB.getNickname());
             }
-            String fileName = path + user.getNickname() + "-profile-picture" + ".png";
-            multipartFile.transferTo(new File(fileName));
+            String fileName = user.getNickname() + "-profile-picture" + ".png";
+            multipartFile.transferTo(new File(path + fileName));
             user.setProfilePicture(fileName);
             userRepository.updateProfilePicture(fileName, user.getNickname());
         }

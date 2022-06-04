@@ -6,16 +6,19 @@
 </head>
 <body>
 <th:block th:if="${user != null}">
-<a href="/main">main page</a>
-<div class="nickname">
+    <a href="/main">main page</a>
+    <div th:if="${user.profilePicture != null}" class="profilePicture" >
+        <img th:src="@{${'/img/' + user.profilePicture}}" width="100" height="150">
+    </div>
+    <div class="nickname">
         <h1 th:text="${user.nickname}"></h1>
-</div>
-<div class="description" >
+    </div>
+    <div class="description">
         <h1 th:text="${user.userDescription}"></h1>
-</div>
-<div class="updateProfileLink" >
-<a th:href="@{|/${user.nickname}/update|}">Update profile</a>
-</div>
+    </div>
+    <div class="updateProfileLink">
+        <a th:href="@{|/${user.nickname}/update|}">Update profile</a>
+    </div>
 </th:block>
 </body>
 </html>
