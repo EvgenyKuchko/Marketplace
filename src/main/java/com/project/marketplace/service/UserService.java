@@ -63,6 +63,7 @@ public class UserService implements UserDetailsService {
         } else if (!isPasswordEquals) {
             throw new PasswordException("The passwords don't match");
         }
+        user.setProfilePicture("default-profile-picture.png");
         user.setRoles(Collections.singleton(Role.USER));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -78,7 +79,7 @@ public class UserService implements UserDetailsService {
     public void updateProfile(User user, MultipartFile multipartFile) throws IOException {
         User userFromDB = userRepository.findByNickname(user.getNickname());
         if (multipartFile != null && !Objects.requireNonNull(multipartFile.getOriginalFilename()).isEmpty()) {
-            if (userFromDB.getProfilePicture() != null) {
+            if (!userFromDB.getProfilePicture().equals("default-profile-picture.png")) {
                 File previousPic = new File(path + userFromDB.getProfilePicture());
                 previousPic.delete();
                 userRepository.deleteProfilePicture(userFromDB.getNickname());
