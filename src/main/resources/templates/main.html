@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Marketplace</title>
 </head>
 <body>
 <h2>Hello</h2>
-<div sec:authentication="name"></div>
+<div sec:authentication="name">email</div>
+<div sec:authentication="principal.nickname">nickname</div>
 </body>
 </html>

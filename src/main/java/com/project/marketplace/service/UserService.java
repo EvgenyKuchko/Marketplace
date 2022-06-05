@@ -3,13 +3,12 @@ package com.project.marketplace.service;
 import com.project.marketplace.exception.EmailException;
 import com.project.marketplace.exception.NicknameException;
 import com.project.marketplace.exception.PasswordException;
+import com.project.marketplace.model.CustomUserDetails;
 import com.project.marketplace.model.Role;
 import com.project.marketplace.model.User;
 import com.project.marketplace.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,9 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -44,11 +41,7 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (Role role : user.getRoles()) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getAuthority()));
-        }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
+        return new CustomUserDetails(user);
     }
 
     @Transactional
