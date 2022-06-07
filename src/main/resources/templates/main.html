@@ -6,8 +6,18 @@
     <title>Marketplace</title>
 </head>
 <body>
-<h2>Hello</h2>
-<div sec:authentication="name">email</div>
-<div sec:authentication="principal.nickname">nickname</div>
+<header>
+    <div sec:authorize="!isAuthenticated()">
+        <h4><a href="/login">Sign In</a></h4>
+    </div>
+    <div sec:authorize="isAuthenticated()">
+        <h4>Hello,
+            <div sec:authentication="principal.nickname">nickname</div>
+        <form name="logoutForm" th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+        </h4>
+    </div>
+</header>
 </body>
 </html>
